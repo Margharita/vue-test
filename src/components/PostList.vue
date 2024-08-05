@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="posts.length > 0">
     <h3>Technologies list:</h3>
     <!-- v-bind:prop - пробежка по массиву, маппинг и отображение дочю компонента -->
     <post-item
