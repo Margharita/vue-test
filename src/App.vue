@@ -1,6 +1,10 @@
 <template>
   <div class="app">
-    <post-form @create="createPost" />
+    <h1>Posts</h1>
+    <app-button @click="showDialog">Create post</app-button>
+    <app-dialog v-model:show="dialogVisible">
+      <post-form @create="createPost"
+    /></app-dialog>
     <post-list :posts="posts" @delete="removePost" />
     <!-- v-bind:prop - прокидывает пропсы в компонент |v-bind:prop === :prop| -->
     <!-- @delete - прослушка конечная и вызов функции в родительском компоненте -->
@@ -16,6 +20,7 @@ export default {
 
   data() {
     return {
+      dialogVisible: false,
       posts: [
         { id: 1, title: "JavaScript", body: "JavaScript description" },
         { id: 2, title: "Go", body: "Go description" },
@@ -28,9 +33,12 @@ export default {
     };
   },
   methods: {
-    createPost(post, second) {
+    showDialog() {
+      this.dialogVisible = true;
+    },
+    createPost(post) {
       this.posts.push(post);
-      console.log(post, second);
+      this.dialogVisible = false;
     },
     inputTitle(e) {
       this.title = e.target.value;
