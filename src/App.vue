@@ -9,13 +9,15 @@
     <app-dialog v-model:show="dialogVisible">
       <post-form @create="createPost"
     /></app-dialog>
-    <post-list :posts="posts" @delete="removePost" />
     <!-- v-bind:prop - прокидывает пропсы в компонент |v-bind:prop === :prop| -->
     <!-- @delete - прослушка конечная и вызов функции в родительском компоненте -->
+    <post-list :posts="posts" @delete="removePost" v-if="!isPostsLoading" />
+    <div v-else>Loading...</div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import PostForm from "./components/PostForm.vue";
 import PostList from "./components/PostList.vue";
 
@@ -25,16 +27,13 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      posts: [
-        { id: 1, title: "JavaScript", body: "JavaScript description" },
-        { id: 2, title: "Go", body: "Go description" },
-        { id: 3, title: "Python", body: "Python description" },
-        { id: 4, title: "Java", body: "Java description" },
-        { id: 5, title: "C#", body: "C# description" },
-      ],
-      title: "",
-      body: "",
+      isPostsLoading: false,
+      posts: [],
     };
+  },
+  mounted() {
+    console.log("mount");
+    this.fetchPosts();
   },
   methods: {
     showDialog() {
@@ -52,6 +51,18 @@ export default {
     },
     removePost(post) {
       this.posts = this.posts.filter((p) => p.id !== post.id);
+    },
+    async fetchPosts() {
+      try {
+        this.isPostsLoading = true;
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts?_limit=10"
+        );
+        this.posts = response.data;
+        this.isPostsLoading = false;
+      } catch (e) {
+        console.log(e.error.message);
+      }
     },
   },
 };
