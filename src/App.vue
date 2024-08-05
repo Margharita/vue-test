@@ -1,8 +1,9 @@
 <template>
   <div class="app">
     <post-form @create="createPost" />
-    <post-list :posts="posts" />
+    <post-list :posts="posts" @delete="removePost" />
     <!-- v-bind:prop - прокидывает пропсы в компонент |v-bind:prop === :prop| -->
+    <!-- @delete - прослушка конечная и вызов функции в родительском компоненте -->
   </div>
 </template>
 
@@ -36,6 +37,9 @@ export default {
     },
     inputDescription(e) {
       this.body = e.target.value;
+    },
+    removePost(post) {
+      this.posts = this.posts.filter((p) => p.id !== post.id);
     },
   },
 };
