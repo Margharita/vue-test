@@ -2,16 +2,23 @@
   <div class="app">
     <header class="app-header">
       <h1>Posts</h1>
-      <app-button class="create__btn" @click="showDialog"
-        >Create post</app-button
-      >
+      <div class="app__btns">
+        <app-select v-model="selectedSort" :options="sortOptions" />
+        <app-button class="create__btn" @click="showDialog"
+          >Create post</app-button
+        >
+      </div>
     </header>
     <app-dialog v-model:show="dialogVisible">
       <post-form @create="createPost"
     /></app-dialog>
     <!-- v-bind:prop - прокидывает пропсы в компонент |v-bind:prop === :prop| -->
     <!-- @delete - прослушка конечная и вызов функции в родительском компоненте -->
-    <post-list :posts="posts" @delete="removePost" v-if="!isPostsLoading" />
+    <post-list
+      :posts="sortedPosts"
+      @delete="removePost"
+      v-if="!isPostsLoading"
+    />
     <div v-else>Loading...</div>
   </div>
 </template>
@@ -28,12 +35,35 @@ export default {
     return {
       dialogVisible: false,
       isPostsLoading: false,
+      selectedSort: "",
+      sortOptions: [
+        { value: "title", name: "By name" },
+        { value: "body", name: "By description" },
+      ],
       posts: [],
     };
   },
   mounted() {
     console.log("mount");
     this.fetchPosts();
+  },
+  // watch: {
+  //   selectedSort(newValue) {
+  //     // oтрабатывает в тот момет когда меняется модель selectedSort
+  //     this.posts.sort((post1, post2) => {
+  //       return post1[newValue]?.localeCompare(post2[newValue])
+  //     });
+  //   },
+  // },
+  computed: {
+    sortedPosts() {
+      //prevent init array mutaion (only new array will be mutated)
+      return [...this.posts].sort((post1, post2) => {
+        return post1[this.selectedSort]?.localeCompare(
+          post2[this.selectedSort]
+        );
+      });
+    },
   },
   methods: {
     showDialog() {
@@ -85,7 +115,9 @@ export default {
   margin: 15px 0;
 }
 
-.create__btn {
-  justify-self: flex-end;
+.app__btns {
+  display: flex;
+  justify-content: space-between;
+  width: 250px;
 }
 </style>
