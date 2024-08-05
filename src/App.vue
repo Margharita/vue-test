@@ -1,32 +1,18 @@
 <template>
   <div class="app">
-    <form class="form" @submit.prevent>
-      <h4>Create new post</h4>
-      <input
-        v-bind:value="title"
-        @input="title = $event.target.value"
-        class="input"
-        type="text"
-        placeholder="Title"
-      />
-      <input
-        v-bind:value="body"
-        @input="inputDescription"
-        class="input"
-        type="text"
-        placeholder="Description"
-      />
-      <button class="btn" @click="createPost">Create</button>
-    </form>
-    <div class="post" v-for="post in posts" :key="post.id">
-      <div><strong>Title:</strong> {{ post.title }}</div>
-      <div><strong>Description:</strong> {{ post.body }}</div>
-    </div>
+    <post-form @create="createPost" />
+    <post-list :posts="posts" />
+    <!-- v-bind:prop - прокидывает пропсы в компонент |v-bind:prop === :prop| -->
   </div>
 </template>
 
 <script>
+import PostForm from "./components/PostForm.vue";
+import PostList from "./components/PostList.vue";
+
 export default {
+  components: { PostForm, PostList },
+
   data() {
     return {
       posts: [
@@ -41,15 +27,9 @@ export default {
     };
   },
   methods: {
-    createPost() {
-      const newPost = {
-        id: Date.now(),
-        title: this.title,
-        body: this.body,
-      };
-      this.posts.push(newPost);
-      this.title = "";
-      this.body = "";
+    createPost(post, second) {
+      this.posts.push(post);
+      console.log(post, second);
     },
     inputTitle(e) {
       this.title = e.target.value;
@@ -70,32 +50,5 @@ export default {
 
 .app {
   padding: 20px;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-}
-
-.btn {
-  margin-top: 15px;
-  align-self: flex-end;
-  padding: 10px 15px;
-}
-
-.input {
-  width: 100%;
-  bottom: 1px solid teal;
-  padding: 10px 15px;
-  margin-top: 15px;
-  background: none;
-  color: teal;
-  border: 1px solid teal;
-}
-
-.post {
-  padding: 15px;
-  border: 1px solid teal;
-  margin-top: 15px;
 }
 </style>
