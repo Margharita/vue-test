@@ -1,7 +1,11 @@
 <template>
   <div class="app">
-    <h1>Posts</h1>
-    <app-button @click="showDialog">Create post</app-button>
+    <header class="app-header">
+      <h1>Posts</h1>
+      <app-button class="create__btn" @click="showDialog"
+        >Create post</app-button
+      >
+    </header>
     <app-dialog v-model:show="dialogVisible">
       <post-form @create="createPost"
     /></app-dialog>
@@ -62,5 +66,15 @@ export default {
 
 .app {
   padding: 20px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.create__btn {
+  justify-self: flex-end;
 }
 </style>
