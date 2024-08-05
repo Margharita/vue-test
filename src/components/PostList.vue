@@ -11,6 +11,7 @@
     />
     <!-- слушаем событие delete и там эмитим еще раз наверх событие и пост-->
   </div>
+  <h2 v-else style="color: red">Posts list is empty</h2>
 </template>
 
 <script>
