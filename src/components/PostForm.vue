@@ -15,7 +15,7 @@
       placeholder="Description"
     />
     <!-- Обработка события клик |v-on:click === @click| -->
-    <button class="btn" @click="createPost">Create</button>
+    <app-button class="form-btn" @click="createPost">Create</app-button>
   </form>
 </template>
 
@@ -24,8 +24,9 @@ export default {
   methods: {
     createPost() {
       this.post.id = Date.now();
-      this.$emit("create", this.post, 'second part');
+      this.$emit("create", this.post, "second part");
       this.post = {
+        id: null,
         title: "",
         body: "",
       };
@@ -34,6 +35,7 @@ export default {
   data() {
     return {
       post: {
+        id: null,
         title: "",
         body: "",
       },
@@ -48,12 +50,6 @@ export default {
   flex-direction: column;
 }
 
-.btn {
-  margin-top: 15px;
-  align-self: flex-end;
-  padding: 10px 15px;
-}
-
 .input {
   width: 100%;
   bottom: 1px solid teal;
@@ -62,6 +58,10 @@ export default {
   background: none;
   color: teal;
   border: 1px solid teal;
+}
+
+.form-btn {
+  margin-top: 15px;
 }
 </style>
 

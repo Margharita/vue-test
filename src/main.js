@@ -1,13 +1,13 @@
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
-// import App from "./App.vue";
-// import router from "./router";
-// import store from "./store";
+// экспорт всех UI элементов:
+import components from "./components/UI";
 
-Vue.config.productionTip = false;
+const app = createApp(App);
 
-new Vue({
-  // router,
-  // store,
-  render: (h) => h(App),
-}).$mount("#app");
+// регистрация всех UI элементов:
+components.forEach((component) => {
+  app.component(component.name, component);
+});
+
+app.mount("#app");

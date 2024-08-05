@@ -1,8 +1,11 @@
 <template>
   <div class="post">
-    <!-- интерполяция (ниже) -->
-    <div><strong>Title:</strong> {{ post.title }}</div>
-    <div><strong>Description:</strong> {{ post.body }}</div>
+    <div>
+      <!-- интерполяция (ниже) -->
+      <div><strong>Title:</strong> {{ post.title }}</div>
+      <div><strong>Description:</strong> {{ post.body }}</div>
+    </div>
+    <div class="post__btns"><app-button>Delete</app-button></div>
   </div>
 </template>
 
@@ -22,5 +25,8 @@ export default {
   padding: 15px;
   border: 1px solid teal;
   margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
