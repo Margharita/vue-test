@@ -1,19 +1,14 @@
 <template>
   <form class="form" @submit.prevent>
     <h4>Create new post</h4>
-    <input v-model="post.title" class="input" type="text" placeholder="Title" />
+    <app-input v-model="post.title" placeholder="Title" />
     <!-- Двухстороннее связывание через v-model -->
     <!-- Двухстороннее связывание через v-bind и @input:
      Add to input:
       v-bind:value="post.title"
       @input="post.title = $event.target.value"
     -->
-    <input
-      v-model="post.body"
-      class="input"
-      type="text"
-      placeholder="Description"
-    />
+    <app-input v-model="post.body" placeholder="Description" />
     <!-- Обработка события клик |v-on:click === @click| -->
     <app-button class="form-btn" @click="createPost">Create</app-button>
   </form>
@@ -48,16 +43,6 @@ export default {
 .form {
   display: flex;
   flex-direction: column;
-}
-
-.input {
-  width: 100%;
-  bottom: 1px solid teal;
-  padding: 10px 15px;
-  margin-top: 15px;
-  background: none;
-  color: teal;
-  border: 1px solid teal;
 }
 
 .form-btn {
