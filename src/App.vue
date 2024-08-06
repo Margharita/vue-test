@@ -21,6 +21,20 @@
       v-if="!isPostsLoading"
     />
     <div v-else>Loading...</div>
+    <div class="page__wrapper">
+      <!-- динамическое добавление класса :class -->
+      <div
+        v-for="pageNumber in total"
+        :key="pageNumber"
+        class="page"
+        :class="{
+          'current-page': page === pageNumber,
+        }"
+        @click="changePage(pageNumber)"
+      >
+        {{ pageNumber }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -42,6 +56,10 @@ export default {
         { value: "title", name: "By name" },
         { value: "body", name: "By description" },
       ],
+      // пагинация - page/limit/total
+      page: 1,
+      limit: 10,
+      total: 0,
       posts: [],
     };
   },
@@ -90,12 +108,24 @@ export default {
     removePost(post) {
       this.posts = this.posts.filter((p) => p.id !== post.id);
     },
+    changePage(clickedPage) {
+      this.page = clickedPage;
+      this.fetchPosts();
+    },
     async fetchPosts() {
       try {
         this.isPostsLoading = true;
         const response = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts?_limit=10"
+          "https://jsonplaceholder.typicode.com/posts",
+          {
+            params: {
+              _page: this.page,
+              _limit: this.limit,
+            },
+          }
         );
+        // вычисляем количество страниц
+        this.total = Math.ceil(response.headers["x-total-count"] / this.limit);
         this.posts = response.data;
         this.isPostsLoading = false;
       } catch (e) {
@@ -129,5 +159,19 @@ export default {
   justify-content: space-between;
   width: 250px;
   padding-top: 15px;
+}
+.page__wrapper {
+  display: flex;
+  margin-top: 15px;
+}
+.page {
+  padding: 10px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.current-page {
+  border: 1px solid teal;
+  background-color: ghostwhite;
+  color: darkcyan;
 }
 </style>
