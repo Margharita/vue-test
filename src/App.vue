@@ -2,6 +2,7 @@
   <div class="app">
     <header class="app-header">
       <h1>Posts</h1>
+      <app-input v-model="searchQuery" placeholder="Search..." />
       <div class="app__btns">
         <app-select v-model="selectedSort" :options="sortOptions" />
         <app-button class="create__btn" @click="showDialog"
@@ -15,7 +16,7 @@
     <!-- v-bind:prop - прокидывает пропсы в компонент |v-bind:prop === :prop| -->
     <!-- @delete - прослушка конечная и вызов функции в родительском компоненте -->
     <post-list
-      :posts="sortedPosts"
+      :posts="sortedAndSearchedPosts"
       @delete="removePost"
       v-if="!isPostsLoading"
     />
@@ -35,6 +36,7 @@ export default {
     return {
       dialogVisible: false,
       isPostsLoading: false,
+      searchQuery: "",
       selectedSort: "",
       sortOptions: [
         { value: "title", name: "By name" },
@@ -63,6 +65,12 @@ export default {
           post2[this.selectedSort]
         );
       });
+    },
+    // в новом computed свойстве можем использовать старое computed свойство
+    sortedAndSearchedPosts() {
+      return this.sortedPosts.filter((post) =>
+        post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
     },
   },
   methods: {
@@ -111,13 +119,15 @@ export default {
 
 .app-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   margin: 15px 0;
 }
 
 .app__btns {
+  align-self: flex-end;
   display: flex;
   justify-content: space-between;
   width: 250px;
+  padding-top: 15px;
 }
 </style>
