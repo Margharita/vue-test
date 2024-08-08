@@ -1,7 +1,7 @@
 <template>
   <form class="form" @submit.prevent>
     <h4>Create new post</h4>
-    <app-input v-model="post.title" placeholder="Title" />
+    <app-input v-focus v-model="post.title" placeholder="Title" />
     <!-- Двухстороннее связывание через v-model -->
     <!-- Двухстороннее связывание через v-bind и @input:
      Add to input:
