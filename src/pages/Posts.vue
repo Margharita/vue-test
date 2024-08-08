@@ -2,7 +2,7 @@
   <div>
     <header class="header">
       <h1>Posts</h1>
-      <app-input v-model="searchQuery" placeholder="Search..." />
+      <app-input v-focus v-model="searchQuery" placeholder="Search..." />
       <div class="app__btns">
         <app-select v-model="selectedSort" :options="sortOptions" />
         <app-button class="create__btn" @click="showDialog"
