@@ -3,6 +3,9 @@
     <div @click="$router.push('/')">Vue 3</div>
     <div class="navbar__btns">
       <app-button @click="$router.push('/posts')">Posts</app-button>
+      <app-button @click="$router.push('/stored/posts')"
+        >Posts With Store</app-button
+      >
       <app-button @click="$router.push('/about')">About</app-button>
     </div>
   </div>
