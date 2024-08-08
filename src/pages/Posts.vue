@@ -22,7 +22,14 @@
     />
     <div v-else>Loading...</div>
     <!-- блок за которым следим чтобы определить что мы достигл конца страницы -->
-    <div class="observer" ref="observer"></div>
+    <!-- <div class="observer" ref="observer"></div> -->
+    <div
+      v-intersection="{
+        loadMorePosts: loadMorePosts,
+        isLastPage: this.page < this.total,
+      }"
+      class="observer"
+    ></div>
     <!-- <div class="page__wrapper">  // обычная пагинация
       динамическое добавление класса :class
       <div
@@ -70,20 +77,20 @@ export default {
     this.fetchPosts();
 
     // from https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API - register Intersection_Observer
-    const options = {
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
+    // const options = {
+    //   rootMargin: "0px",
+    //   threshold: 1.0,
+    // };
 
-    // eslint-disable-next-line no-unused-vars
-    const callback = (entries, observer) => {
-      if (entries[0].isIntersecting && this.page < this.total) {
-        this.loadMorePosts();
-      }
-    };
+    // // eslint-disable-next-line no-unused-vars
+    // const callback = (entries, observer) => {
+    //   if (entries[0].isIntersecting && this.page < this.total) {
+    //     this.loadMorePosts();
+    //   }
+    // };
 
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer);
+    // const observer = new IntersectionObserver(callback, options);
+    // observer.observe(this.$refs.observer);
   },
   // watch: {
   // наблюдатель, отрабатываемый на смену страницы и подгружающий посты
