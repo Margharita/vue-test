@@ -21,6 +21,8 @@
       v-if="!isPostsLoading"
     />
     <div v-else>Loading...</div>
+    <!-- блок за которым следим чтобы определить что мы достигл конца страницы -->
+    <div class="observer" ref="observer"></div>
     <!-- <div class="page__wrapper">  // обычная пагинация
       динамическое добавление класса :class
       <div
@@ -66,6 +68,22 @@ export default {
   mounted() {
     console.log("mount");
     this.fetchPosts();
+
+    // from https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API - register Intersection_Observer
+    const options = {
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+
+    // eslint-disable-next-line no-unused-vars
+    const callback = (entries, observer) => {
+      if (entries[0].isIntersecting && this.page < this.total) {
+        this.loadMorePosts();
+      }
+    };
+
+    const observer = new IntersectionObserver(callback, options);
+    observer.observe(this.$refs.observer);
   },
   // watch: {
   // наблюдатель, отрабатываемый на смену страницы и подгружающий посты
@@ -137,6 +155,25 @@ export default {
         console.log(e.error.message);
       }
     },
+    async loadMorePosts() {
+      try {
+        this.page += 1;
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts",
+          {
+            params: {
+              _page: this.page,
+              _limit: this.limit,
+            },
+          }
+        );
+        // вычисляем количество страниц
+        this.total = Math.ceil(response.headers["x-total-count"] / this.limit);
+        this.posts = [...this.posts, ...response.data]; // добавляем в конец массива свежие посты
+      } catch (e) {
+        console.log(e.error.message);
+      }
+    },
   },
 };
 </script>
@@ -178,5 +215,10 @@ export default {
   border: 1px solid teal;
   background-color: ghostwhite;
   color: darkcyan;
+}
+.observer {
+  height: 30px;
+  background-color: gray;
+  visibility: hidden;
 }
 </style>
