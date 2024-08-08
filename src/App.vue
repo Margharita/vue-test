@@ -21,8 +21,8 @@
       v-if="!isPostsLoading"
     />
     <div v-else>Loading...</div>
-    <div class="page__wrapper">
-      <!-- динамическое добавление класса :class -->
+    <!-- <div class="page__wrapper">  // обычная пагинация
+      динамическое добавление класса :class
       <div
         v-for="pageNumber in total"
         :key="pageNumber"
@@ -34,7 +34,7 @@
       >
         {{ pageNumber }}
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -68,13 +68,16 @@ export default {
     this.fetchPosts();
   },
   // watch: {
+  // наблюдатель, отрабатываемый на смену страницы и подгружающий посты
+  // page() {
+  //   this.fetchPosts();
+  // },
   //   selectedSort(newValue) {
   //     // oтрабатывает в тот момет когда меняется модель selectedSort
   //     this.posts.sort((post1, post2) => {
   //       return post1[newValue]?.localeCompare(post2[newValue])
   //     });
   //   },
-  // },
   computed: {
     sortedPosts() {
       //prevent init array mutaion (only new array will be mutated)
@@ -91,6 +94,7 @@ export default {
       );
     },
   },
+
   methods: {
     showDialog() {
       this.dialogVisible = true;
@@ -108,10 +112,11 @@ export default {
     removePost(post) {
       this.posts = this.posts.filter((p) => p.id !== post.id);
     },
-    changePage(clickedPage) {
-      this.page = clickedPage;
-      this.fetchPosts();
-    },
+    // changePage(clickedPage) { // обычная пагинация
+    //   this.page = clickedPage;
+    //   // можно подгружать посты с новой страницы здесь...
+    //   // this.fetchPosts();
+    // },
     async fetchPosts() {
       try {
         this.isPostsLoading = true;
