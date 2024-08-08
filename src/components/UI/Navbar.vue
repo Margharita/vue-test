@@ -24,7 +24,7 @@ export default { name: "navbar" };
 .navbar__btns {
   margin-left: auto;
 }
-.navbar__btns button:first-of-type {
+.navbar__btns button:not(:last-of-type) {
   margin-right: 16px;
 }
 </style>
