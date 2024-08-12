@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { postModule } from "./postModule";
 
 export default createStore({
   state: {
@@ -26,6 +27,7 @@ export default createStore({
     // to make side effects e.g. get data from server API, call mutations and save data in state
   },
   modules: {
+    post: postModule,
     // piece of state with own getters, mutations and actions
   },
 });
