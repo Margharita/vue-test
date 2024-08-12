@@ -57,7 +57,6 @@ export default {
     };
   },
   mounted() {
-    console.log("mount");
     this.fetchPosts();
   },
   computed: {
