@@ -21,13 +21,13 @@
       </div>
     </header>
     <app-dialog v-model:show="dialogVisible">
-      <post-form @create="createPost"
+      <post-form @create="onCreatePost"
     /></app-dialog>
     <!-- v-bind:prop - прокидывает пропсы в компонент |v-bind:prop === :prop| -->
     <!-- @delete - прослушка конечная и вызов функции в родительском компоненте -->
     <post-list
       :posts="sortedAndSearchedPosts"
-      @delete="removePost"
+      @delete="onRemovePost"
       v-if="!isPostsLoading"
     />
     <div v-else>Loading...</div>
@@ -66,7 +66,6 @@ export default {
       searchQuery: (state) => state.post.searchQuery,
       selectedSort: (state) => state.post.selectedSort,
       sortOptions: (state) => state.post.sortOptions,
-      // пагинация - page/limit/total
       page: (state) => state.post.page,
       limit: (state) => state.post.limit,
       totalPages: (state) => state.post.totalPages,
@@ -87,12 +86,14 @@ export default {
     ...mapActions({
       loadMorePosts: "post/loadMorePosts",
       fetchPosts: "post/fetchPosts",
+      createPost: "post/createPost",
+      removePost: "post/removePost",
     }),
     showDialog() {
       this.dialogVisible = true;
     },
-    createPost(post) {
-      this.store.state.post.posts.push(post);
+    onCreatePost(post) {
+      this.createPost(post);
       this.dialogVisible = false;
     },
     inputTitle(e) {
@@ -101,10 +102,8 @@ export default {
     inputDescription(e) {
       this.body = e.target.value;
     },
-    removePost(post) {
-      this.store.state.post.posts = this.store.state.post.posts.filter(
-        (p) => p.id !== post.id
-      );
+    onRemovePost(post) {
+      this.removePost(post.id);
     },
   },
 };

@@ -9,7 +9,6 @@ export const postModule = {
       { value: "title", name: "By name" },
       { value: "body", name: "By description" },
     ],
-    // пагинация - page/limit/total
     page: 1,
     limit: 10,
     totalPages: 0,
@@ -50,6 +49,15 @@ export const postModule = {
     },
   },
   actions: {
+    createPost({ state, commit }, payload) {
+      commit("setPosts", [...state.posts, payload]);
+    },
+    removePost({ state, commit }, payload) {
+      commit(
+        "setPosts",
+        state.posts.filter((p) => p.id !== payload)
+      );
+    },
     async fetchPosts({ state, commit }) {
       try {
         commit("setLoading", true);
