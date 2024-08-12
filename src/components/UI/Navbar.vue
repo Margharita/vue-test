@@ -6,6 +6,9 @@
       <app-button @click="$router.push('/stored/posts')"
         >Posts With Store</app-button
       >
+      <app-button @click="$router.push('/compositionAPI/posts')"
+        >Posts With Composition API</app-button
+      >
       <app-button @click="$router.push('/about')">About</app-button>
     </div>
   </div>
